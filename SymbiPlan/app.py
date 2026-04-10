@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+import folium
+from streamlit_folium import st_folium
 
 # --- 1. AI PREDICTION LOGIC ---
 def get_ai_recommendation(df, selected_location):
@@ -38,7 +40,52 @@ def get_ai_recommendation(df, selected_location):
     strength = round(avg_signals.max(), 1)
     
     return f"AI Analysis: **{best_op}** is currently the strongest at {selected_location} with an average strength of {strength}/5."
+def display_geospatial_map(df):
+    st.write("### 📍 Live Campus Signal Hotspots")
+    
+    # Coordinates for Symbiosis Kiwale spots
+    location_coords = {
+        "Engineering Block": [18.661137, 73.717647],
+        "Management Block": [18.661208, 73.718160],
+        "Admin Block":[18.660660, 73.718208],
+        "Library":[18.66181884364397, 73.71833802016623]
+        "Open Cafeteria": [18.661544, 73.718335],
+        "Nescafe":[18.660965, 73.718379]
+        "Hostel":[18.661609483643133, 73.71628323295177]
+        "Amphitheatre":[18.660895, 73.717906]
+        "Canteen": [18.660520, 73.717550],
+        "Skill Center": [18.660730, 73.719091]
+    }
 
+    # Center the map on the Kiwale campus
+    m = folium.Map(location=[18.6445, 73.7135], zoom_start=18)
+
+    # Automatically find column names from your Google Sheet
+    try:
+        location_col = [c for c in df.columns if '70%' in c][0]
+        signal_col = [c for c in df.columns if 'Signal Strength' in c][0]
+        
+        avg_data = df.groupby(location_col)[signal_col].mean().reset_index()
+
+        for _, row in avg_data.iterrows():
+            loc_name = row[location_col]
+            signal = row[signal_col]
+            
+            if loc_name in location_coords:
+                color = "red" if signal < 2.5 else "orange" if signal < 3.8 else "green"
+                folium.Circle(
+                    location=location_coords[loc_name],
+                    radius=25,
+                    popup=f"{loc_name}: {round(signal, 1)}/5",
+                    color=color,
+                    fill=True,
+                    fill_opacity=0.5
+                ).add_to(m)
+        
+        st_folium(m, width=700, height=450)
+    except:
+        st.warning("Map is waiting for more survey data to pinpoint locations.")
+        
 # --- 2. WEBSITE SETTINGS ---
 st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
 
@@ -57,7 +104,7 @@ except:
      df = pd.read_csv(csv_url)
     
 # --- 4. NAVIGATION TABS ---
-tab1, tab2, tab3 = st.tabs(["🔍 Signal Finder", "📊 Live Heatmap", "📢 Report Issue"])
+tab1, tab2, tab3 = st.tabs(["🔍 Signal Finder", "📊 Live Heatmap", "📢 Report your "])
 
 with tab1:
     st.header("Find the Best Network")
@@ -75,11 +122,18 @@ with tab1:
         st.info(result)
 
 with tab2:
-    st.header("Campus Network Heatmap")
-    st.write("Visualizing real-time signal data across SSPU.")
-    # PASTE YOUR POWER BI LINK BELOW
+    with tab2: # This is usually your Heatmap tab
+    st.header("Visual Network Analysis")
+     st.write("Visualizing real-time signal data across SSPU.")
+    # 1. Your existing Power BI heatmap (if you still want it)
+    # components.iframe(power_bi_url, height=500)
     pbi_url = "PASTE_YOUR_POWER_BI_EMBED_LINK_HERE"
     st.components.v1.iframe(pbi_url, height=600)
+    st.divider()
+    
+    # 2. Add the NEW interactive map right below it
+    display_geospatial_map(df)
+
 
 with tab3:
     st.header("Help the Community")
