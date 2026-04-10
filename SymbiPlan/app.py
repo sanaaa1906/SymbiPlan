@@ -103,38 +103,62 @@ except:
      csv_url = SHEET_URL.split('/edit')[0] + '/export?format=csv'
      df = pd.read_csv(csv_url)
     
-# --- 4. NAVIGATION TABS ---
-tab1, tab2, tab3 = st.tabs(["🔍 Signal Finder", "📊 Live Heatmap", "📢 Report your "])
+# --- 4. PAGE CONTROLLER (Navigation Logic) ---
+# This initializes the app to stay on 'Home' until a button is clicked
+if 'page' not in st.session_state:
+    st.session_state.page = 'Home'
 
-with tab1:
-    st.header("Find the Best Network")
-    # This list matches your form options
-    campus_addas = [
-        "Admin Block", "Management Block", "Engineering Block", "Skill Center", 
-        "Library", "Canteen", "Open Cafeteria", "Nescafe", 
-        "Hostel Wings", "Parking", "Amphitheater"
-    ]
+def set_page(page_name):
+    st.session_state.page = page_name
+
+# --- 5. THE HOME PAGE ---
+if st.session_state.page == 'Home':
+    # Add your College Logo
+    # Replace 'logo.png' with your actual filename or a URL
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        # Use a placeholder if logo is missing: st.image("https://placehold.co/400x150?text=SSPU+LOGO")
+        st.image("https://www.sspu.ac.in/images/sspu-logo.png", use_container_width=True) 
     
+    st.markdown("<h1 style='text-align: center; color: #1E3A8A; font-family: sans-serif;'>SymbiPlan</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-style: italic;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
+    
+    st.divider()
+
+    # Create the 3 Boxes (Buttons) one below the other
+    st.markdown("### Choose a Tool:")
+    
+    # Box 1: Signal Finder
+    if st.button("🔍 SIGNAL FINDER - Find the best network for your spot", use_container_width=True):
+        set_page('Signal Finder')
+
+    # Box 2: Heatmap
+    if st.button("📊 LIVE HEATMAP - View visual campus hotspots", use_container_width=True):
+        set_page('Heatmap')
+
+    # Box 3: Report
+    if st.button("📢 REPORT SIGNAL - Help the community grow", use_container_width=True):
+        set_page('Report')
+
+# --- 6. INDIVIDUAL PAGES ---
+
+elif st.session_state.page == 'Signal Finder':
+    if st.button("⬅️ Back to Home"): set_page('Home')
+    st.header("🔍 Signal Finder")
+    campus_addas = ["Admin Block", "Management Block", "Engineering Block", "Skill Center", "Library", "Canteen", "Open Cafeteria", "Nescafe", "Hostel Wings", "Parking", "Amphitheater"]
     selected_adda = st.selectbox("Where are you located?", campus_addas)
-    
     if st.button("Check Best Signal"):
         result = get_ai_recommendation(df, selected_adda)
         st.info(result)
 
-with tab2:
-   # This is usually your Heatmap tab
-    st.header("Visual Network Analysis")
-    
-    # Add the NEW interactive map right below it
+elif st.session_state.page == 'Heatmap':
+    if st.button("⬅️ Back to Home"): set_page('Home')
+    st.header("📊 Visual Network Analysis")
     display_geospatial_map(df)
 
-
-with tab3:
-    st.header("Help the Community")
+elif st.session_state.page == 'Report':
+    if st.button("⬅️ Back to Home"): set_page('Home')
+    st.header("📢 Help the Community")
     st.write("Submit a new signal report for your current location.")
-    # This is your actual form link
     form_url = "https://docs.google.com/forms/d/e/1FAIpQLSfmsDX0Oo2nWGt6xScoIV-X0_UPHV_qLCsYDnKQ4P07ZN5CYg/viewform"
     st.link_button("Open Signal Form", form_url)
-
-with st.expander("📊 View Raw Campus Data"):
-    st.dataframe(df)
