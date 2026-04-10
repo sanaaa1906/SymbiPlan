@@ -23,12 +23,7 @@ def get_ai_recommendation(df, selected_location):
     strength = round(avg_signals.max(), 1)
     
     return f"AI Analysis: **{best_op}** is currently the strongest at {selected_location} (Avg: {strength}/5)."
-    def get_ai_recommendation(df, selected_location):
-    # This matches your actual Sheet column: "Where do you spend 70% of your time on campus?"
-    location_col = 'Where do you spend 70% of your time on campus?'
-    operator_col = 'Primary Telecom Operator'
-    signal_col = 'Signal Strength at your primary campus location'
-
+    
     # Filter data for the chosen spot
     subset = df[df[location_col] == selected_location]
     
