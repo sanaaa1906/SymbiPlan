@@ -44,14 +44,16 @@ st.title("📶 SymbiPlan: SSPU Kiwale")
 st.markdown("Analyzing campus network signals using peer-to-peer data.")
 
 # --- 3. CONNECT TO DATA ---
-# This pulls data from your Google Sheet
-try:
-    SHEET_URL = "https://docs.google.com/spreadsheets/d/1FVhzop8SMzmLylTPeqtm2PW2GxNbO1eTas4j7nYD__M/edit?usp=sharing"
-df = pd.read_csv(SHEET_URL.replace('/edit#gid=', '/export?format=csv&gid='))
-except Exception as e:
-    st.error("Connection error. Make sure your Google Sheet link is in the Secrets.")
-    st.stop()
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1FVhzop8SMzmLylTPeqtm2PW2GxNbO1eTas4j7nYD__M/edit?usp=sharing"
 
+try:
+     conn = st.connection("gsheets", type=GSheetsConnection)
+     df = conn.read()
+except:
+    # This 'except' block fixes your SyntaxError
+     csv_url = SHEET_URL.split('/edit')[0] + '/export?format=csv'
+     df = pd.read_csv(csv_url)
+    
 # --- 4. NAVIGATION TABS ---
 tab1, tab2, tab3 = st.tabs(["🔍 Signal Finder", "📊 Live Heatmap", "📢 Report Issue"])
 
