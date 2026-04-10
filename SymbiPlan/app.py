@@ -4,9 +4,12 @@ import pandas as pd
 
 # --- 1. AI PREDICTION LOGIC ---
 def get_ai_recommendation(df, selected_adda):
-    # This matches the "Location" column from your form
-    subset = df[df['Location on Campus (Adda)'] == selected_adda]
+    # Ensure this matches your Google Sheet header EXACTLY
+    location_col = "Adda" 
     
+    # This is the line that was crashing
+    subset = df[df[location_col] == selected_location]
+    # ... rest of your code
     if subset.empty:
         return "No data for this spot yet. AI predicts standard outdoor coverage."
     
