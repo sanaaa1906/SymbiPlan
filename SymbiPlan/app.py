@@ -124,13 +124,8 @@ with tab1:
 with tab2:
    # This is usually your Heatmap tab
     st.header("Visual Network Analysis")
-    # 1. Your existing Power BI heatmap (if you still want it)
-    # components.iframe(power_bi_url, height=500)
-    pbi_url = "PASTE_YOUR_POWER_BI_EMBED_LINK_HERE"
-    st.components.v1.iframe(pbi_url, height=600)
-    st.divider()
     
-    # 2. Add the NEW interactive map right below it
+    # Add the NEW interactive map right below it
     display_geospatial_map(df)
 
 
