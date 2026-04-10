@@ -124,7 +124,7 @@ with tab1:
 with tab2:
    # This is usually your Heatmap tab
     st.header("Visual Network Analysis")
-     st.write("Visualizing real-time signal data across SSPU.")
+    st.write("Visualizing real-time signal data across SSPU.")
     # 1. Your existing Power BI heatmap (if you still want it)
     # components.iframe(power_bi_url, height=500)
     pbi_url = "PASTE_YOUR_POWER_BI_EMBED_LINK_HERE"
