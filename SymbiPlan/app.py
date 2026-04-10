@@ -3,15 +3,26 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 
 # --- 1. AI PREDICTION LOGIC ---
-def get_ai_recommendation(df, selected_adda):
-    # Ensure this matches your Google Sheet header EXACTLY
-    location_col = "Adda" 
-    
-    # This is the line that was crashing
+def get_ai_recommendation(df, selected_location):
+    # This finds the columns by searching for keywords instead of the full question
+    try:
+        location_col = [c for c in df.columns if '70%' in c][0]
+        operator_col = [c for c in df.columns if 'Operator' in c][0]
+        signal_col = [c for c in df.columns if 'Signal Strength' in c][0]
+    except IndexError:
+        return "Error: Could not find the right columns in the Google Sheet. Check your headers!"
+
     subset = df[df[location_col] == selected_location]
-    # ... rest of your code
+    
     if subset.empty:
-        return "No data for this spot yet. AI predicts standard outdoor coverage."
+        return f"No data reported for {selected_location} yet."
+    
+    # Calculate the best operator
+    avg_signals = subset.groupby(operator_col)[signal_col].mean()
+    best_op = avg_signals.idxmax()
+    strength = round(avg_signals.max(), 1)
+    
+    return f"AI Analysis: **{best_op}** is currently the strongest at {selected_location} (Avg: {strength}/5)."
     
     # Calculate which operator has the best average signal strength
     avg_signals = subset.groupby('Primary Network Operator')['Current Signal Strength'].mean()
