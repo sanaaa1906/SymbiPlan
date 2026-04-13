@@ -92,16 +92,20 @@ st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
 st.title("📶 SymbiPlan: SSPU Kiwale")
 st.markdown("Analyzing campus network signals using peer-to-peer data.")
 
-# --- 3. CONNECT TO DATA ---
+import requests
+
+# --- 3. DATA SETUP (Google Form Sync) ---
+# Paste the link to the GOOGLE SHEET (not the form) here
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1FVhzop8SMzmLylTPeqtm2PW2GxNbO1eTas4j7nYD__M/edit?usp=sharing"
 
 try:
-     conn = st.connection("gsheets", type=GSheetsConnection)
-     df = conn.read()
-except:
-    # This 'except' block fixes your SyntaxError
-     csv_url = SHEET_URL.split('/edit')[0] + '/export?format=csv'
-     df = pd.read_csv(csv_url)
+    # This connects directly to your live Google Form responses
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    df = conn.read(spreadsheet=SHEET_URL, ttl=60) # Updates every 60 seconds
+except Exception:
+    # Fallback if the connection tool acts up
+    csv_url = SHEET_URL.split('/edit')[0] + '/export?format=csv'
+    df = pd.read_csv(csv_url)
     
 # --- 4. PAGE CONTROLLER (Navigation Logic) ---
 # This initializes the app to stay on 'Home' until a button is clicked
