@@ -171,16 +171,17 @@ def set_page(page_name):
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        # Just use the filename. Streamlit looks in your GitHub folder automatically.
-        st.image("SymbiPlan/image.png", use_container_width=True) 
+    # This displays the image across the full width but contained
+    st.markdown('<div class="hero-container">', unsafe_allow_html=True)
+    st.image("SymbiPlan/image.png", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown("<h1 style='text-align: center; color: #1E3A8A; font-family: sans-serif;'>SymbiPlan</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-style: italic;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
+    # Title and Subtitle
+    st.markdown("<h1 style='text-align: center; margin-top: 10px;'>SymbiPlan</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-style: italic; color: #555;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
     
     st.divider()
-    # Create the 3 Boxes (Buttons) one below the other
+    
     st.markdown("### Choose a Tool:")
     
     # Box 1: Signal Finder
