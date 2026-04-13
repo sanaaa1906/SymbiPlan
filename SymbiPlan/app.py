@@ -41,7 +41,7 @@ st.markdown("""
     
     /* 1. ULTRA-THIN HERO BANNER */
     .hero-container img {
-        width: 100% !important;
+        width: 20px !important;
         height: 20px !important; 
         object-fit: cover !important;
         border-radius: 10px !important;
