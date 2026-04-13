@@ -195,18 +195,15 @@ def set_page(page_name):
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
-    # Display the slim banner across the full width
+    # The Thin Strip Banner
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
     st.image("SymbiPlan/image.png", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Title - keeping it compact
-    st.markdown("<h2 style='text-align: center; color: #1E3A8A; margin-bottom: 0;'>SymbiPlan</h2>", unsafe_allow_html=True)
+    # Title - Compact and centered
+    st.markdown("<h2 style='text-align: center; color: #1E3A8A;'>SymbiPlan</h2>", unsafe_allow_html=True)
     
-    # Quick Tool Access (No Divider to save space)
-    st.markdown("##### Choose a Tool:")
-    
-    # Tools placed in a compact list
+    # Navigation Buttons - Immediately visible
     if st.button("🔍 SIGNAL FINDER", use_container_width=True):
         set_page('Signal Finder')
 
@@ -215,7 +212,7 @@ if st.session_state.page == 'Home':
 
     if st.button("📢 REPORT SIGNAL", use_container_width=True):
         set_page('Report')
-
+        
 # --- 6. INDIVIDUAL PAGES ---
 
 elif st.session_state.page == 'Signal Finder':
