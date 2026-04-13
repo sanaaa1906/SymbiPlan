@@ -86,57 +86,67 @@ def display_geospatial_map(df):
     except:
         st.warning("Map is waiting for more survey data to pinpoint locations.")
         
-# --- 2. WEBSITE SETTINGS ---
+# --- 2. WEBSITE SETTINGS & THEME ---
 st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
-# --- CUSTOM LIGHT THEME (Aura Design) ---
+
+# Injecting the "Main Character" Light Aura Theme
 st.markdown(
-    
+    """
     <style>
-    /* Soft, airy gradient background for the whole app */
+    /* 1. Global background */
     .stApp {
-        background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
     }
-    
-    /* Styling buttons to look like premium glass tiles */
+
+    /* 2. Styling the Navigation Buttons (The Boxes) */
     div.stButton > button {
-        background: rgba(255, 255, 255, 0.6) !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        border-radius: 15px !important;
+        width: 100% !important;
+        height: 100px !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        border-radius: 20px !important;
         color: #1E3A8A !important;
-        height: 80px !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
         backdrop-filter: blur(10px) !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-        transition: all 0.3s ease !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.4s ease !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
     }
-    
+
     div.stButton > button:hover {
-        transform: translateY(-3px) !important;
-        border: 1px solid #1E3A8A !important;
-        box-shadow: 0 8px 25px rgba(30, 58, 138, 0.1) !important;
+        transform: scale(1.02) !important;
         background: white !important;
+        box-shadow: 0 15px 40px rgba(30, 58, 138, 0.15) !important;
+        border: 1px solid #1E3A8A !important;
     }
 
-    /* Styling the selectbox and info messages */
-    .stSelectbox, .stInfo {
-        background: rgba(255, 255, 255, 0.8) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(5px) !important;
+    /* 3. Styling the specific 'Check' and 'Back' buttons so they look different */
+    button[kind="secondary"] {
+        height: auto !important;
+        padding: 10px !important;
     }
 
-    /* Clean up headers */
+    /* 4. Glassmorphism for the Selectbox and Info areas */
+    .stSelectbox, .stInfo, .stAlert {
+        background: rgba(255, 255, 255, 0.7) !important;
+        border-radius: 15px !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        backdrop-filter: blur(10px) !important;
+        padding: 20px !important;
+    }
+
+    /* 5. Centering and header styling */
     h1, h2, h3 {
         color: #1E3A8A !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        letter-spacing: -1px !important;
+        font-family: 'Inter', sans-serif !important;
+        text-align: center !important;
     }
     </style>
-    ,
+    """,
     unsafe_allow_html=True
 )
-
-import requests
 
 # --- 3. DATA SETUP (Google Form Sync) ---
 # Paste the link to the GOOGLE SHEET (not the form) here
