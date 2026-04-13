@@ -117,18 +117,15 @@ def set_page(page_name):
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
-    # Add your College Logo
-    # Replace 'logo.png' with your actual filename or a URL
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        # Use a placeholder if logo is missing: st.image("https://placehold.co/400x150?text=SSPU+LOGO")
-        st.image("C:\Users\DELL\Desktop\Sana\SEM 4 project\symbi 2.jpg", use_container_width=True) 
+        # Just use the filename. Streamlit looks in your GitHub folder automatically.
+        st.image("symbi 2.jpg", use_container_width=True) 
     
     st.markdown("<h1 style='text-align: center; color: #1E3A8A; font-family: sans-serif;'>SymbiPlan</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-style: italic;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
     
     st.divider()
-
     # Create the 3 Boxes (Buttons) one below the other
     st.markdown("### Choose a Tool:")
     
