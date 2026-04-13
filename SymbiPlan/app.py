@@ -39,29 +39,34 @@ st.markdown("""
     <style>
     .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important; }
     
-    /* 1. ULTRA-THIN HERO BANNER */
-    .hero-container img {
-        width: 20px !important;
-        height: 20px !important; 
-        object-fit: cover !important;
-        border-radius: 10px !important;
-        margin: 0 !important;
-    }
-
-    /* 2. COMPACT NAVIGATION TILES */
+    /* 1. COMPACT NAVIGATION TILES */
     div.stButton > button {
         width: 100% !important;
-        height: 70px !important;
+        height: 80px !important;
         background: rgba(255, 255, 255, 0.6) !important;
-        border-radius: 12px !important;
+        border-radius: 15px !important;
         color: #1E3A8A !important;
         font-weight: 700 !important;
         border: 1px solid rgba(255,255,255,0.8) !important;
+        transition: 0.3s;
     }
 
-    /* 3. PUSH CONTENT TO TOP */
-    .main .block-container { padding-top: 1rem !important; }
-    h2 { margin: 0 !important; padding: 5px 0 !important; color: #1E3A8A !important; text-align: center; }
+    div.stButton > button:hover {
+        background: white !important;
+        transform: scale(1.01);
+    }
+
+    /* 2. PUSH CONTENT TO THE VERY TOP */
+    .main .block-container { 
+        padding-top: 2rem !important; 
+    }
+    
+    h2 { 
+        margin: 0 !important; 
+        padding: 10px 0 !important; 
+        color: #1E3A8A !important; 
+        text-align: center; 
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -77,15 +82,17 @@ if 'page' not in st.session_state: st.session_state.page = 'Home'
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
-    st.markdown('<div class="hero-container">', unsafe_allow_html=True)
-    st.image("SymbiPlan/image.png", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown("<h2>SymbiPlan</h2>", unsafe_allow_html=True)
+    # Removed the image and hero-container
+    st.markdown("<h2 style='margin-top: 0px;'>SymbiPlan</h2>", unsafe_allow_html=True)
     
-    if st.button("🔍 SIGNAL FINDER", use_container_width=True): st.session_state.page = 'Signal Finder'
-    if st.button("📊 LIVE HEATMAP", use_container_width=True): st.session_state.page = 'Heatmap'
-    if st.button("📢 REPORT SIGNAL", use_container_width=True): st.session_state.page = 'Report'
-
+    if st.button("🔍 SIGNAL FINDER", use_container_width=True): 
+        st.session_state.page = 'Signal Finder'
+        
+    if st.button("📊 LIVE HEATMAP", use_container_width=True): 
+        st.session_state.page = 'Heatmap'
+        
+    if st.button("📢 REPORT SIGNAL", use_container_width=True): 
+        st.session_state.page = 'Report'
 # --- 6. INDIVIDUAL PAGES ---
 elif st.session_state.page == 'Signal Finder':
     if st.button("⬅️ Back"): st.session_state.page = 'Home'
