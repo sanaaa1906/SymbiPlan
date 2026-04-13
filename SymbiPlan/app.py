@@ -97,7 +97,7 @@ if st.session_state.page == 'Home':
 elif st.session_state.page == 'Signal Finder':
     if st.button("⬅️ Back"): st.session_state.page = 'Home'
     st.header("🔍 Signal Finder")
-    loc = st.selectbox("Where are you?", ["Admin Block", "Engineering Block", "Library", "Canteen", "Hostel"])
+    loc = st.selectbox("Where are you?", ["Admin Block", "Management Block", "Engineering Block", "Skill Center", "Library", "Canteen", "Open Cafeteria", "Nescafe", "Hostel Wings", "Parking", "Amphitheater"])
     if st.button("Check"): st.info(get_ai_recommendation(df, loc))
 
 elif st.session_state.page == 'Heatmap':
