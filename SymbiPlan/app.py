@@ -90,7 +90,7 @@ def display_geospatial_map(df):
 st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
 # --- CUSTOM LIGHT THEME (Aura Design) ---
 st.markdown(
-    """
+    
     <style>
     /* Soft, airy gradient background for the whole app */
     .stApp {
@@ -132,7 +132,7 @@ st.markdown(
         letter-spacing: -1px !important;
     }
     </style>
-    """,
+    ,
     unsafe_allow_html=True
 )
 
