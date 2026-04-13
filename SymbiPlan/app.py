@@ -89,8 +89,6 @@ def display_geospatial_map(df):
 # --- 2. WEBSITE SETTINGS ---
 st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
 
-st.title("📶 SymbiPlan: SSPU Kiwale")
-st.markdown("Analyzing campus network signals using peer-to-peer data.")
 
 import requests
 
@@ -120,7 +118,7 @@ if st.session_state.page == 'Home':
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         # Just use the filename. Streamlit looks in your GitHub folder automatically.
-        st.image("symbi 2.jpg", use_container_width=True) 
+        st.image("logo.jpg", use_container_width=True) 
     
     st.markdown("<h1 style='text-align: center; color: #1E3A8A; font-family: sans-serif;'>SymbiPlan</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-style: italic;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
