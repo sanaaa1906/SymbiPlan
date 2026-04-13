@@ -143,25 +143,28 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
         text-align: center !important;
     }
-    /* This makes the image a slim, wide banner */
+/* This creates a very thin, cinematic header strip */
 .hero-container img {
     width: 100% !important;
-    height: 140px !important; /* Extremely slim height to save space */
-    object-fit: cover !important; /* Keeps the 'Main Character' look without stretching */
-    object-position: center 30%; /* Focuses on the top-middle part of your AI image */
-    border-radius: 15px !important;
-    margin-bottom: 5px !important;
-}
-
-/* Reduces the gap between elements to keep tools on-screen */
-.stHeader, .main .block-container {
-    padding-top: 2rem !important;
-    padding-bottom: 1rem !important;
-}
-
-h1 {
+    height: 90px !important; /* Very small height */
+    object-fit: cover !important;
+    object-position: center 25%; /* Keeps the most important part of the image visible */
+    border-radius: 12px !important;
     margin-bottom: 0px !important;
-    padding-bottom: 0px !important;
+}
+
+/* Removes top padding from the entire website to pull everything UP */
+.main .block-container {
+    padding-top: 1rem !important;
+    padding-bottom: 0rem !important;
+}
+
+/* Reduces space around the title */
+h2 {
+    margin-top: -10px !important;
+    padding-bottom: 5px !important;
+}    
+
 }
     </style>
     """,
