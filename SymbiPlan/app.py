@@ -143,10 +143,31 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
         text-align: center !important;
     }
+    /* This makes the image a slim, wide banner */
+.hero-container img {
+    width: 100% !important;
+    height: 140px !important; /* Extremely slim height to save space */
+    object-fit: cover !important; /* Keeps the 'Main Character' look without stretching */
+    object-position: center 30%; /* Focuses on the top-middle part of your AI image */
+    border-radius: 15px !important;
+    margin-bottom: 5px !important;
+}
+
+/* Reduces the gap between elements to keep tools on-screen */
+.stHeader, .main .block-container {
+    padding-top: 2rem !important;
+    padding-bottom: 1rem !important;
+}
+
+h1 {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 # --- 3. DATA SETUP (Google Form Sync) ---
 # Paste the link to the GOOGLE SHEET (not the form) here
