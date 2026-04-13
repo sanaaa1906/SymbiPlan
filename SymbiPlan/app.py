@@ -10,169 +10,93 @@ def get_ai_recommendation(df, selected_location):
         location_col = [c for c in df.columns if '70%' in c][0]
         operator_col = [c for c in df.columns if 'Operator' in c][0]
         signal_col = [c for c in df.columns if 'Signal Strength' in c][0]
-    except IndexError:
-        return "Error: Could not find columns. Check Google Sheet headers!"
-
-    subset = df[df[location_col] == selected_location]
-    if subset.empty:
-        return f"No data reported for {selected_location} yet."
-    
-    avg_signals = subset.groupby(operator_col)[signal_col].mean()
-    best_op = avg_signals.idxmax()
-    strength = round(avg_signals.max(), 1)
-    return f"AI Analysis: **{best_op}** is currently the strongest at {selected_location} (Avg: {strength}/5)."
+        subset = df[df[location_col] == selected_location]
+        if subset.empty: return f"No data for {selected_location} yet."
+        avg_signals = subset.groupby(operator_col)[signal_col].mean()
+        best_op, strength = avg_signals.idxmax(), round(avg_signals.max(), 1)
+        return f"AI Analysis: **{best_op}** is strongest at {selected_location} ({strength}/5)."
+    except: return "Data error. Check headers!"
 
 def display_geospatial_map(df):
     st.write("### 📍 Live Campus Signal Hotspots")
-    location_coords = {
-        "Engineering Block": [18.661137, 73.717647],
-        "Management Block": [18.661208, 73.718160],
-        "Admin Block":[18.660660, 73.718208],
-        "Library":[18.66181884364397, 73.71833802016623],
-        "Open Cafeteria": [18.661544, 73.718335],
-        "Nescafe":[18.660965, 73.718379],
-        "Hostel":[18.661609483643133, 73.71628323295177],
-        "Amphitheatre":[18.660895, 73.717906],
-        "Canteen": [18.660520, 73.717550],
-        "Skill Center": [18.660730, 73.719091]
-    }
+    coords = {"Engineering Block": [18.6611, 73.7176], "Management Block": [18.6612, 73.7181], "Admin Block":[18.6606, 73.7182], "Library":[18.6618, 73.7183], "Open Cafeteria": [18.6615, 73.7183], "Nescafe":[18.6609, 73.7183], "Hostel":[18.6616, 73.7162], "Amphitheatre":[18.6608, 73.7179], "Canteen": [18.6605, 73.7175], "Skill Center": [18.6607, 73.7190]}
     m = folium.Map(location=[18.6611, 73.7176], zoom_start=18)
     try:
-        location_col = [c for c in df.columns if '70%' in c][0]
-        signal_col = [c for c in df.columns if 'Signal Strength' in c][0]
-        avg_data = df.groupby(location_col)[signal_col].mean().reset_index()
-        for _, row in avg_data.iterrows():
-            loc_name = row[location_col]
-            signal = row[signal_col]
-            if loc_name in location_coords:
-                color = "red" if signal < 2.5 else "orange" if signal < 3.8 else "green"
-                folium.Circle(
-                    location=location_coords[loc_name],
-                    radius=20,
-                    popup=f"{loc_name}: {round(signal, 1)}/5",
-                    color=color,
-                    fill=True,
-                    fill_opacity=0.5
-                ).add_to(m)
-        st_folium(m, width=700, height=450)
-    except:
-        st.warning("Map is waiting for more survey data.")
+        l_col = [c for c in df.columns if '70%' in c][0]
+        s_col = [c for c in df.columns if 'Signal Strength' in c][0]
+        avg = df.groupby(l_col)[s_col].mean().reset_index()
+        for _, r in avg.iterrows():
+            if r[l_col] in coords:
+                c = "red" if r[s_col] < 2.5 else "orange" if r[s_col] < 3.8 else "green"
+                folium.Circle(location=coords[r[l_col]], radius=15, color=c, fill=True).add_to(m)
+        st_folium(m, width=700, height=400)
+    except: st.warning("Waiting for data...")
 
 # --- 2. WEBSITE SETTINGS & THEME ---
-st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
+st.set_page_config(page_title="SymbiPlan", page_icon="📶", layout="wide")
 
-st.markdown(
-    """
+st.markdown("""
     <style>
-    /* 1. Global background */
-    .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-    }
-
-    /* 2. Styling the Navigation Buttons */
-    div.stButton > button {
-        width: 100% !important;
-        height: 80px !important;
-        background: rgba(255, 255, 255, 0.5) !important;
-        border: 1px solid rgba(255, 255, 255, 0.8) !important;
-        border-radius: 15px !important;
-        color: #1E3A8A !important;
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        backdrop-filter: blur(10px) !important;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
-        transition: all 0.3s ease !important;
-    }
-
-    div.stButton > button:hover {
-        transform: scale(1.01) !important;
-        background: white !important;
-        border: 1px solid #1E3A8A !important;
-    }
-
-    /* 3. Small Cinematic Header Image */
+    .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important; }
+    
+    /* 1. ULTRA-THIN HERO BANNER */
     .hero-container img {
         width: 100% !important;
-        height: 70px !important; /* Extremely small height to avoid scrolling */
+        height: 60px !important; 
         object-fit: cover !important;
-        object-position: center 20%;
         border-radius: 10px !important;
-        margin-bottom: 0px !important;
+        margin: 0 !important;
     }
 
-    /* 4. Remove top white space */
-    .main .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 0rem !important;
-    }
-
-    /* 5. Headers */
-    h1, h2, h3 {
+    /* 2. COMPACT NAVIGATION TILES */
+    div.stButton > button {
+        width: 100% !important;
+        height: 70px !important;
+        background: rgba(255, 255, 255, 0.6) !important;
+        border-radius: 12px !important;
         color: #1E3A8A !important;
-        text-align: center !important;
-        margin-top: 0px !important;
-        padding-top: 5px !important;
+        font-weight: 700 !important;
+        border: 1px solid rgba(255,255,255,0.8) !important;
     }
-    
-    .stSelectbox, .stInfo {
-        background: rgba(255, 255, 255, 0.7) !important;
-        border-radius: 10px !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
-# --- 3. DATA SETUP ---
+    /* 3. PUSH CONTENT TO TOP */
+    .main .block-container { padding-top: 1rem !important; }
+    h2 { margin: 0 !important; padding: 5px 0 !important; color: #1E3A8A !important; text-align: center; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- 3. DATA & NAVIGATION ---
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1FVhzop8SMzmLylTPeqtm2PW2GxNbO1eTas4j7nYD__M/edit?usp=sharing"
 try:
     conn = st.connection("gsheets", type=GSheetsConnection)
     df = conn.read(spreadsheet=SHEET_URL, ttl=60)
-except Exception:
-    csv_url = SHEET_URL.split('/edit')[0] + '/export?format=csv'
-    df = pd.read_csv(csv_url)
+except:
+    df = pd.read_csv(SHEET_URL.split('/edit')[0] + '/export?format=csv')
 
-# --- 4. NAVIGATION ---
-if 'page' not in st.session_state:
-    st.session_state.page = 'Home'
-
-def set_page(page_name):
-    st.session_state.page = page_name
+if 'page' not in st.session_state: st.session_state.page = 'Home'
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
     st.image("SymbiPlan/image.png", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
-    
     st.markdown("<h2>SymbiPlan</h2>", unsafe_allow_html=True)
     
-    if st.button("🔍 SIGNAL FINDER", use_container_width=True):
-        set_page('Signal Finder')
-
-    if st.button("📊 LIVE HEATMAP", use_container_width=True):
-        set_page('Heatmap')
-
-    if st.button("📢 REPORT SIGNAL", use_container_width=True):
-        set_page('Report')
+    if st.button("🔍 SIGNAL FINDER", use_container_width=True): st.session_state.page = 'Signal Finder'
+    if st.button("📊 LIVE HEATMAP", use_container_width=True): st.session_state.page = 'Heatmap'
+    if st.button("📢 REPORT SIGNAL", use_container_width=True): st.session_state.page = 'Report'
 
 # --- 6. INDIVIDUAL PAGES ---
 elif st.session_state.page == 'Signal Finder':
-    if st.button("⬅️ Back"): set_page('Home')
+    if st.button("⬅️ Back"): st.session_state.page = 'Home'
     st.header("🔍 Signal Finder")
-    campus_addas = ["Admin Block", "Management Block", "Engineering Block", "Skill Center", "Library", "Canteen", "Open Cafeteria", "Nescafe", "Hostel Wings", "Parking", "Amphitheater"]
-    selected_adda = st.selectbox("Select Location", campus_addas)
-    if st.button("Check Best Signal"):
-        result = get_ai_recommendation(df, selected_adda)
-        st.info(result)
+    loc = st.selectbox("Where are you?", ["Admin Block", "Engineering Block", "Library", "Canteen", "Hostel"])
+    if st.button("Check"): st.info(get_ai_recommendation(df, loc))
 
 elif st.session_state.page == 'Heatmap':
-    if st.button("⬅️ Back"): set_page('Home')
-    st.header("📊 Network Analysis")
+    if st.button("⬅️ Back"): st.session_state.page = 'Home'
     display_geospatial_map(df)
 
 elif st.session_state.page == 'Report':
-    if st.button("⬅️ Back"): set_page('Home')
-    st.header("📢 Help the Community")
-    form_url = "https://docs.google.com/forms/d/e/1FAIpQLSfmsDX0Oo2nWGt6xScoIV-X0_UPHV_qLCsYDnKQ4P07ZN5CYg/viewform"
-    st.link_button("Open Signal Form", form_url)
+    if st.button("⬅️ Back"): st.session_state.page = 'Home'
+    st.link_button("Open Signal Form", "https://docs.google.com/forms/d/e/1FAIpQLSfmsDX0Oo2nWGt6xScoIV-X0_UPHV_qLCsYDnKQ4P07ZN5CYg/viewform")
