@@ -88,7 +88,53 @@ def display_geospatial_map(df):
         
 # --- 2. WEBSITE SETTINGS ---
 st.set_page_config(page_title="SymbiPlan SSPU", page_icon="📶", layout="wide")
+# --- CUSTOM LIGHT THEME (Aura Design) ---
+st.markdown(
+    """
+    <style>
+    /* Soft, airy gradient background for the whole app */
+    .stApp {
+        background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    }
+    
+    /* Styling buttons to look like premium glass tiles */
+    div.stButton > button {
+        background: rgba(255, 255, 255, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 15px !important;
+        color: #1E3A8A !important;
+        height: 80px !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    div.stButton > button:hover {
+        transform: translateY(-3px) !important;
+        border: 1px solid #1E3A8A !important;
+        box-shadow: 0 8px 25px rgba(30, 58, 138, 0.1) !important;
+        background: white !important;
+    }
 
+    /* Styling the selectbox and info messages */
+    .stSelectbox, .stInfo {
+        background: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(5px) !important;
+    }
+
+    /* Clean up headers */
+    h1, h2, h3 {
+        color: #1E3A8A !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        letter-spacing: -1px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 import requests
 
