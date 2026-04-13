@@ -192,29 +192,25 @@ def set_page(page_name):
 
 # --- 5. THE HOME PAGE ---
 if st.session_state.page == 'Home':
-    # This displays the image across the full width but contained
+    # Display the slim banner across the full width
     st.markdown('<div class="hero-container">', unsafe_allow_html=True)
     st.image("SymbiPlan/image.png", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Title and Subtitle
-    st.markdown("<h1 style='text-align: center; margin-top: 10px;'>SymbiPlan</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-style: italic; color: #555;'>Your Campus, Your Signal, Your Solution.</p>", unsafe_allow_html=True)
+    # Title - keeping it compact
+    st.markdown("<h2 style='text-align: center; color: #1E3A8A; margin-bottom: 0;'>SymbiPlan</h2>", unsafe_allow_html=True)
     
-    st.divider()
+    # Quick Tool Access (No Divider to save space)
+    st.markdown("##### Choose a Tool:")
     
-    st.markdown("### Choose a Tool:")
-    
-    # Box 1: Signal Finder
-    if st.button("🔍 SIGNAL FINDER - Find the best network for your spot", use_container_width=True):
+    # Tools placed in a compact list
+    if st.button("🔍 SIGNAL FINDER", use_container_width=True):
         set_page('Signal Finder')
 
-    # Box 2: Heatmap
-    if st.button("📊 LIVE HEATMAP - View visual campus hotspots", use_container_width=True):
+    if st.button("📊 LIVE HEATMAP", use_container_width=True):
         set_page('Heatmap')
 
-    # Box 3: Report
-    if st.button("📢 REPORT SIGNAL - Help the community grow", use_container_width=True):
+    if st.button("📢 REPORT SIGNAL", use_container_width=True):
         set_page('Report')
 
 # --- 6. INDIVIDUAL PAGES ---
